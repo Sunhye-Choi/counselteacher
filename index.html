@@ -35,7 +35,7 @@
   .top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
   .top h1{margin:0;font-size:1.6rem}
   .top .tools{display:flex;gap:8px;flex-wrap:wrap}
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
   .stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
   .stat .k{color:var(--sub);font-size:.9rem}
   .stat .v{font-family:'Jua';font-size:1.8rem;line-height:1.2}
@@ -85,6 +85,120 @@
   .lock-info.show{display:block}
   .logout{margin-top:10px;background:none;border:none;color:var(--sub);text-decoration:underline;font-size:.9rem;display:none}
   .poll{color:var(--sub);font-size:.85rem;margin:-6px 0 12px;text-align:right}
+  /* 보기 전환 */
+  .views{display:flex;gap:8px;margin-bottom:14px}
+  .view{border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 18px;font-family:'Jua';font-size:1.05rem}
+  .view.on{background:var(--main);border-color:var(--main);color:#fff}
+  #statsView{display:none}
+  /* 통계 */
+  .range{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+  .range input[type=date]{padding:7px 10px;border-radius:10px;border:2px solid var(--line)}
+  .range .tab{font-size:.92rem}
+  .sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-top:12px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .panel h3{margin:0 0 10px;font-size:1.15rem}
+  .panel.wide{grid-column:1/-1}
+  .brow{display:grid;grid-template-columns:130px 1fr 64px;gap:10px;align-items:center;margin:7px 0;font-size:.95rem}
+  .brow .lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .btrack{background:#f1ebdc;border-radius:999px;height:14px;overflow:hidden}
+  .bfill{height:100%;background:var(--main);border-radius:999px}
+  .brow .n{text-align:right;font-weight:bold;font-variant-numeric:tabular-nums}
+  .brow .n small{color:var(--sub);font-weight:normal}
+  .days{display:flex;align-items:flex-end;gap:2px;height:130px;border-bottom:2px solid var(--line)}
+  .days .d{flex:1;background:var(--main);border-radius:3px 3px 0 0;min-height:0}
+  .days .d:hover{background:var(--main-dark)}
+  .days-axis{display:flex;justify-content:space-between;color:var(--sub);font-size:.82rem;margin-top:4px}
+  .nodata{color:var(--sub);text-align:center;padding:16px 0}
+  /* 보호자 문자 */
+  .btn.parent{background:#6c8ebf}
+  .btn.parent:hover{background:#56769f}
+  .modal{position:fixed;inset:0;background:rgba(40,35,25,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal.show{display:flex}
+  .mbox{background:var(--paper);border-radius:18px;width:100%;max-width:940px;max-height:94vh;overflow:auto;padding:20px 22px}
+  .mbox h2{margin:0 0 4px}
+  .mcols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .mbox label{display:block;font-weight:bold;margin:12px 0 4px}
+  .mbox input,.mbox textarea{width:100%;padding:9px 12px;border-radius:10px;border:2px solid var(--line);background:#fff}
+  .mbox input:focus,.mbox textarea:focus{outline:none;border-color:var(--main)}
+  .mbox textarea{min-height:96px;resize:vertical;line-height:1.6}
+  .trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .warn{background:#fff3c4;border-radius:10px;padding:10px 12px;font-size:.92rem;margin-top:10px}
+  .warn.red{background:#ffe3e3;color:#a61e1e}
+  .qchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .qchips button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font-size:.86rem}
+  .qchips button:hover{border-color:var(--main)}
+  .phone{background:#e6ebf2;border-radius:26px;padding:16px;position:sticky;top:0}
+  .phone .to{text-align:center;color:var(--sub);font-size:.9rem;margin-bottom:8px}
+  .bubble{background:#fff;border-radius:16px;padding:12px 14px;white-space:pre-wrap;word-break:break-word;line-height:1.7;min-height:260px;font-size:.98rem}
+  .meta{color:var(--sub);font-size:.85rem;margin-top:8px;text-align:right}
+  .mfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+  @media (max-width:760px){.mcols{grid-template-columns:1fr}.trio{grid-template-columns:1fr}.brow{grid-template-columns:90px 1fr 56px}}
+  .sec-title{font-family:'Jua';font-size:1.05rem;margin:16px 0 6px;display:flex;align-items:center;gap:8px}
+  .sec-title small{font-family:'Gowun Dodum';color:var(--sub);font-size:.85rem}
+  .manage{flex-direction:column;align-items:stretch}
+  .manage .mrow{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+  .plog{background:#eef3fa;border:1px solid #d3deef;border-radius:12px;padding:12px 14px}
+  .plog .entry{white-space:pre-wrap;word-break:break-word;font-size:.95rem;line-height:1.7;padding:8px 0}
+  .plog .entry+.entry{border-top:1px dashed #b8c8e2}
+  .plog .entry b{color:#3f5f8f}
+  .plog .none{color:var(--sub);font-size:.92rem}
+  .badge.sent{background:#e3ecf8;color:#3f5f8f}
+  .ref{background:#f7f2e6;border-radius:10px;padding:10px 12px;font-size:.9rem;white-space:pre-wrap;max-height:120px;overflow:auto;color:var(--ink)}
+  .ref-empty{color:var(--sub)}
+  /* 위험 신호 */
+  .item.risk{border-left-color:#c92a2a!important;box-shadow:0 0 0 3px #ffc9c9}
+  .badge.risk{background:#c92a2a;color:#fff;font-weight:bold}
+  .risk-box{background:#fff0f0;border:2px solid #ffa8a8;color:#a61e1e;border-radius:12px;padding:10px 14px;margin-top:12px;line-height:1.7}
+  .stat.risk{background:#fff0f0;border-color:#ffc9c9}
+  .stat.risk .v{color:#c92a2a}
+  /* 오늘 상담 */
+  #today{display:none;background:#eef7ff;border:2px solid #b9dcff;border-radius:14px;padding:12px 14px;margin-bottom:14px}
+  #today h3{margin:0 0 8px;font-size:1.1rem}
+  #today .chips2{display:flex;flex-wrap:wrap;gap:8px}
+  #today .chip{border:1px solid #b9dcff;background:#fff;border-radius:999px;padding:5px 12px;font-size:.95rem}
+  #today .chip:hover{border-color:#4a90d9}
+  #today .chip.past{opacity:.55}
+  #today .sub{color:var(--sub);font-size:.9rem;margin-top:8px}
+  .badge.sch{background:#e7f5ff;color:#1c6fb8}
+  .sched{display:flex;align-items:center;gap:6px;font-size:.92rem;white-space:nowrap}
+  .sched input{padding:8px;border-radius:10px;border:2px solid var(--line)}
+  .who-link{cursor:pointer;text-decoration:underline dotted 2px;text-underline-offset:4px}
+  .who-link:hover{color:var(--main-dark)}
+  /* 학생별 */
+  #studentsView,#manageView{display:none}
+  .stable{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .stable th,.stable td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  .stable th{background:#f1ebdc;font-weight:bold;font-size:.92rem}
+  .stable tbody tr{cursor:pointer}
+  .stable tbody tr:hover{background:#fff6ec}
+  .stable td.num{text-align:center;font-variant-numeric:tabular-nums}
+  .stable .r{color:#c92a2a;font-weight:bold}
+  /* 학생 누적 기록 */
+  .tl{border-left:3px solid var(--line);margin:14px 0 0 8px;padding-left:18px}
+  .tl-item{position:relative;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .tl-item::before{content:'';position:absolute;left:-27px;top:16px;width:14px;height:14px;border-radius:50%;background:var(--main);border:3px solid var(--paper)}
+  .tl-item.risk::before{background:#c92a2a}
+  .tl-item .when{font-family:'Jua';font-size:1.05rem;margin-bottom:4px}
+  .tl-item .txt{white-space:pre-wrap;word-break:break-word;line-height:1.7}
+  .tl-item .lab{color:var(--sub);font-size:.88rem;margin-top:8px}
+  .tl-memo{background:#f7f2e6;border-radius:8px;padding:8px 10px;white-space:pre-wrap;margin-top:4px}
+  .tl-plog{background:#eef3fa;border-radius:8px;padding:8px 10px;white-space:pre-wrap;margin-top:4px;font-size:.92rem}
+  /* 관리 */
+  .mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+  .mgrid .panel p{margin:6px 0;color:var(--sub);font-size:.93rem}
+  .mgrid textarea,.mgrid input[type=text]{width:100%;padding:9px 12px;border-radius:10px;border:2px solid var(--line);margin:6px 0}
+  .acc-state{font-family:'Jua';font-size:1.3rem;margin:4px 0 8px}
+  .accept{font-family:'Gowun Dodum';font-size:.85rem;padding:3px 10px;border-radius:999px;vertical-align:4px;cursor:pointer}
+  .accept.on{background:#d3f9d8;color:#2b8a3e}
+  .accept.off{background:#ffe3e3;color:#c92a2a}
+  .btn.danger{background:#c92a2a}
+  .btn.danger:hover{background:#a51d1d}
+  @media print{
+    body.print-stu > *:not(#stuModal){display:none!important}
+    body.print-stu #stuModal{position:static;display:block;background:none;padding:0}
+    body.print-stu .mbox{max-height:none;overflow:visible;padding:0}
+    body.print-stu .noprint{display:none!important}
+  }
   @media print{.top .tools,.bar,.manage{display:none}.body{display:block!important}.preview{display:none}}
 </style>
 </head>
@@ -105,7 +219,7 @@
 
 <section id="app">
   <div class="top">
-    <h1>📮 상담 신청함</h1>
+    <h1>📮 상담 신청함 <span class="accept" id="acceptBadge" title="누르면 관리 화면으로 가요"></span></h1>
     <div class="tools">
       <button class="btn ghost" id="notiBtn">🔔 알림 켜기</button>
       <button class="btn ghost" id="soundBtn">🔊 소리 켬</button>
@@ -115,12 +229,23 @@
   </div>
   <div class="poll" id="pollInfo"></div>
 
+  <div class="views">
+    <button class="view on" data-v="list">📋 신청 목록</button>
+    <button class="view" data-v="students">👤 학생별 기록</button>
+    <button class="view" data-v="stats">📊 기간별 통계</button>
+    <button class="view" data-v="manage">⚙️ 관리</button>
+  </div>
+
+  <div id="listView">
   <div class="stats">
     <div class="stat"><div class="k">전체</div><div class="v" id="stTotal">0</div></div>
     <div class="stat hot"><div class="k">미확인</div><div class="v" id="stNew">0</div></div>
     <div class="stat"><div class="k">상담 예정</div><div class="v" id="stPlan">0</div></div>
     <div class="stat hot"><div class="k">🔥 급함 (미완료)</div><div class="v" id="stHot">0</div></div>
+    <div class="stat risk"><div class="k">⚠️ 위험 신호 (미완료)</div><div class="v" id="stRisk">0</div></div>
   </div>
+
+  <div id="today"></div>
 
   <div class="bar">
     <div class="tabs" id="tabs"></div>
@@ -128,7 +253,119 @@
   </div>
 
   <div class="list" id="list"></div>
+  </div>
+
+  <div id="studentsView">
+    <div class="bar"><input class="search" id="stuSearch" placeholder="🔍 이름이나 학번으로 찾기"></div>
+    <div id="stuTable"></div>
+  </div>
+
+  <div id="manageView">
+    <div class="mgrid">
+      <div class="panel">
+        <h3>🚦 상담 신청 받기</h3>
+        <div class="acc-state" id="accState"></div>
+        <p>끄면 학생 화면에 아래 안내가 뜨고 신청서를 보낼 수 없어요. 방학이나 시험 기간에 쓰세요.</p>
+        <textarea id="closedMsgInput" rows="3" placeholder="신청을 받지 않을 때 학생에게 보여 줄 안내"></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="accOn">🟢 신청 받기</button>
+          <button class="btn danger" id="accOff">🔴 신청 마감</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>💾 기록 내려받기</h3>
+        <p>지금까지의 신청 기록 전체를 엑셀에서 열 수 있는 파일(CSV)로 내려받아요.</p>
+        <p>⚠️ 민감한 개인정보가 담긴 파일이에요. 공용 컴퓨터나 USB에 두지 말고, 쓴 뒤에는 지워 주세요.</p>
+        <button class="btn ghost" id="csvBtn">📥 CSV 내려받기</button>
+      </div>
+      <div class="panel">
+        <h3>🗄 학년 말 정리</h3>
+        <p>지금까지의 기록을 <b>새 보관용 구글 시트</b>로 옮기고, 지금 쓰는 시트는 비워요. 새 학년을 깨끗하게 시작할 때 쓰세요.</p>
+        <p>보관 파일은 선생님 구글 드라이브에 생겨요. 학교의 상담 기록 보관 기간이 지나면 지워 주세요.</p>
+        <label style="font-weight:bold;display:block;margin-top:8px">보관 이름</label>
+        <input type="text" id="arcLabel">
+        <label style="font-weight:bold;display:block">확인을 위해 <b style="color:#c92a2a">정리</b> 라고 입력하세요</label>
+        <input type="text" id="arcConfirm" placeholder="정리">
+        <button class="btn danger" id="arcBtn">🗄 보관하고 비우기</button>
+        <div id="arcResult" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="statsView">
+    <div class="range">
+      <b>기간</b>
+      <input type="date" id="fromDate"> ~ <input type="date" id="toDate">
+      <button class="tab" data-r="week">이번 주</button>
+      <button class="tab" data-r="month">이번 달</button>
+      <button class="tab" data-r="lastmonth">지난달</button>
+      <button class="tab" data-r="sem">이번 학기</button>
+      <button class="tab" data-r="year">올해 학년도</button>
+      <button class="tab" data-r="all">전체</button>
+    </div>
+    <div id="statsBody"></div>
+  </div>
 </section>
+
+<div class="modal" id="msgModal">
+  <div class="mbox">
+    <h2>💬 보호자 문자 만들기</h2>
+    <div class="mcols">
+      <div>
+        <div class="trio">
+          <div><label>학교 이름</label><input id="mSchool" placeholder="예: 수영중학교"></div>
+          <div><label>학년·반</label><input id="mClass" placeholder="예: 2학년 3반"></div>
+          <div><label>담임 이름</label><input id="mTeacher" placeholder="예: 최선혜"></div>
+        </div>
+        <div class="trio">
+          <div><label>학생 이름</label><input id="mStudent"></div>
+          <div><label>상담한 날</label><input id="mDate" placeholder="예: 11월 21일"></div>
+          <div><label>상담 주제</label><input id="mTopic"></div>
+        </div>
+        <label>참고: 내 담임 메모 <small style="font-weight:normal;color:var(--sub)">(보기만 할 수 있어요 · 문자에 들어가지 않아요)</small></label>
+        <div class="ref" id="mRef"></div>
+        <label>상담 내용 (보호자에게 보낼 내용)</label>
+        <textarea id="mSummary" placeholder="예: 친구와의 다툼으로 최근 마음이 많이 힘들었다고 이야기했습니다. 서로의 입장을 정리해 보았고, 다음 주에 두 학생이 함께 이야기하는 자리를 갖기로 했습니다."></textarea>
+        <label>가정에서 부탁드릴 점 (선택)</label>
+        <textarea id="mRequest" style="min-height:70px" placeholder="비워 두면 문자에서 빠져요"></textarea>
+        <div class="qchips" id="mQuick">
+          <button type="button">집에서 아이 이야기를 편하게 들어 주세요.</button>
+          <button type="button">아이가 잘 해내고 있으니 많이 격려해 주세요.</button>
+          <button type="button">당분간 아이의 기분 변화를 함께 살펴봐 주세요.</button>
+          <button type="button">통화 가능한 시간을 알려 주시면 연락드리겠습니다.</button>
+        </div>
+        <div class="warn">✍️ 학생이 쓴 글을 그대로 옮기지 말고, <b>선생님이 정리한 내용</b>만 적어 주세요. 보호자에게 알리기 전에 학생에게도 미리 말해 주면 신뢰를 지킬 수 있어요.</div>
+        <div class="warn red" id="mFamilyWarn" style="display:none">⚠️ <b>가족·집</b> 관련 상담이에요. 보호자와의 갈등이나 가정 내 어려움과 관련될 수 있으니, 공유하기 전에 내용을 다시 확인하고 필요하면 전문상담교사나 관리자와 먼저 의논해 주세요.</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="to" id="mTo">보호자님께</div>
+          <div class="bubble" id="mPreview"></div>
+          <div class="meta" id="mMeta"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn ghost" id="mClose">닫기</button>
+      <button class="btn" id="mCopy">📋 문자 내용 복사</button>
+      <button class="btn parent" id="mLog" title="이 문자를 '보호자 공유 기록'에 남겨요 (담임 메모와 별도)">✅ 보냈어요 · 공유 기록 남기기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="stuModal">
+  <div class="mbox">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <h2 id="stuTitle" style="margin:0"></h2>
+      <div style="margin-left:auto;display:flex;gap:8px" class="noprint">
+        <button class="btn ghost" id="stuPrint">🖨 인쇄</button>
+        <button class="btn" id="stuClose">닫기</button>
+      </div>
+    </div>
+    <div id="stuSummary" style="color:var(--sub);margin-top:6px"></div>
+    <div class="tl" id="stuTimeline"></div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -156,6 +393,42 @@ let notiOn = pref('noti', false), soundOn = pref('sound', true);
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const isHot = it => it.urgency.includes('빨리') && it.status !== '상담 완료';
+
+/* ---------- 위험 신호 단어 (띄어쓰기 무시하고 찾아요 · 필요하면 단어를 더 넣으세요) ---------- */
+const RISK_WORDS = [
+  { cat: '생명·자해', words: ['죽고싶', '죽을래', '죽어버리', '죽고말', '자살', '자해', '손목을', '뛰어내', '사라지고싶', '없어지고싶', '살기싫', '살고싶지않', '태어나지말'] },
+  { cat: '폭력·괴롭힘', words: ['때렸', '때려', '때리', '폭행', '협박', '괴롭', '왕따', '따돌', '돈을뺏', '돈뺏', '빼앗', '셔틀', '한테맞', '에게맞', '욕설', '패드립'] },
+  { cat: '성 관련', words: ['성추행', '성폭', '몰카', '몰래찍', '몸을만', '사진을퍼', '사진유포'] },
+  { cat: '가정 위기', words: ['학대', '가출', '집에가기싫', '집에들어가기싫', '쫓겨나'] },
+];
+function riskOf(it) {
+  const t = (it.story + ' ' + it.feeling).replace(/\s/g, '');
+  const cats = [], words = [];
+  RISK_WORDS.forEach(g => {
+    const hit = g.words.filter(w => t.includes(w));
+    if (hit.length) { cats.push(g.cat); words.push(...hit); }
+  });
+  return { cats, words };
+}
+const hasRisk = it => (it._risk || (it._risk = riskOf(it))).cats.length > 0;
+const isRisk = it => hasRisk(it) && it.status !== '상담 완료';
+
+/* ---------- 상담 일정 ---------- */
+const DOW = '일월화수목금토';
+function schDate(it) { if (!it.schedule) return null; const d = new Date(it.schedule); return isNaN(d) ? null : d; }
+function fmtSch(d) { return `${d.getMonth() + 1}/${d.getDate()}(${DOW[d.getDay()]}) ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
+const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+/* ---------- 신청 받기 상태 ---------- */
+let accept = { accepting: true, closedMsg: '' };
+function setAccept(o) {
+  if (!('accepting' in o)) return;
+  accept = { accepting: o.accepting, closedMsg: o.closedMsg || '' };
+  $('acceptBadge').textContent = accept.accepting ? '🟢 신청 받는 중' : '🔴 신청 마감';
+  $('acceptBadge').className = 'accept ' + (accept.accepting ? 'on' : 'off');
+  if (document.activeElement !== $('closedMsgInput')) $('closedMsgInput').value = accept.closedMsg;
+  $('accState').textContent = accept.accepting ? '🟢 지금 신청을 받고 있어요' : '🔴 지금 신청을 받지 않아요';
+}
 function fmtTime(iso) {
   const d = new Date(iso); if (isNaN(d)) return iso;
   const p = n => String(n).padStart(2, '0');
@@ -169,6 +442,7 @@ async function api(payload, pw = password) {
   const out = await res.json();
   if (out.auth === false) { if (password) logout(out.error); throw new Error(out.error); }
   if (!out.ok) throw new Error(out.error || '요청 실패');
+  setAccept(out);
   return out;
 }
 
@@ -195,6 +469,8 @@ $('loginForm').addEventListener('submit', async e => {
 // 화면만 가리기: 내용은 숨기고, 새 신청 확인은 계속
 function lock(msg) {
   unlocked = false; openIds.clear();
+  closeMsg(); closeStu();
+  $('statsBody').innerHTML = ''; $('stuTable').innerHTML = ''; $('today').innerHTML = ''; $('today').style.display = 'none';
   $('list').innerHTML = '';
   $('app').style.display = 'none';
   $('login').style.display = 'flex';
@@ -261,13 +537,16 @@ function applyItems(list, notifyNew) {
   updateTitle(); updateLockInfo();
   // 메모를 쓰는 중이면 화면을 다시 그리지 않음 (쓰던 내용 보호)
   const editing = document.activeElement?.closest?.('.manage');
+  if (unlocked && changed && view === 'stats') renderStats();
+  if (unlocked && changed && view === 'students') renderStudents();
   if (unlocked && changed && !editing) render();
   else if (unlocked && changed) $('pollInfo').textContent += ' · 메모 저장 후 목록이 새로 고쳐져요';
 }
 
 function alertNew(fresh) {
-  const hot = fresh.some(i => i.urgency.includes('빨리'));
-  const msg = `새 상담 신청 ${fresh.length}건이 도착했어요${hot ? ' (🔥 급함 포함)' : ''}`;
+  const risky = fresh.some(hasRisk);
+  const hot = risky || fresh.some(i => i.urgency.includes('빨리'));
+  const msg = `새 상담 신청 ${fresh.length}건이 도착했어요${risky ? ' (⚠️ 꼭 확인이 필요한 신청 포함)' : hot ? ' (🔥 급함 포함)' : ''}`;
   if (unlocked) toast('📮 ' + msg, 4000);
   if (soundOn) playChime(hot);
   // 화면이 TV에 보일 수 있으니 알림에는 이름·내용을 넣지 않음
@@ -338,6 +617,8 @@ function render() {
   $('stNew').textContent = count('미확인');
   $('stPlan').textContent = count('상담 예정');
   $('stHot').textContent = items.filter(isHot).length;
+  $('stRisk').textContent = items.filter(isRisk).length;
+  renderToday();
 
   const tabs = ['진행중', '전체', ...STATUSES];
   $('tabs').innerHTML = tabs.map(t => {
@@ -349,24 +630,29 @@ function render() {
   const q = $('search').value.trim().toLowerCase();
   let list = items.filter(i =>
     filter === '전체' ? true : filter === '진행중' ? i.status !== '상담 완료' : i.status === filter);
-  if (q) list = list.filter(i => [i.name, i.studentId, i.story, i.topic, i.feeling, i.memo].join(' ').toLowerCase().includes(q));
-  // 급한 것 먼저, 그다음 최신순
-  list.sort((a, b) => (isHot(b) - isHot(a)) || (new Date(b.time) - new Date(a.time)));
+  if (q) list = list.filter(i => [i.name, i.studentId, i.story, i.topic, i.feeling, i.memo, i.parentLog].join(' ').toLowerCase().includes(q));
+  // 위험 신호 → 급함 → 최신순
+  list.sort((a, b) => (isRisk(b) - isRisk(a)) || (isHot(b) - isHot(a)) || (new Date(b.time) - new Date(a.time)));
 
   if (!list.length) { $('list').innerHTML = `<div class="empty">📭 해당하는 신청서가 없어요.</div>`; return; }
 
   $('list').innerHTML = list.map(it => `
-    <article class="item s${STATUSES.indexOf(it.status)} ${isHot(it) ? 'hot' : ''} ${openIds.has(it.id) ? 'open' : ''}" data-id="${esc(it.id)}">
+    <article class="item s${STATUSES.indexOf(it.status)} ${isHot(it) ? 'hot' : ''} ${isRisk(it) ? 'risk' : ''} ${openIds.has(it.id) ? 'open' : ''}" data-id="${esc(it.id)}">
       <div class="head">
         ${newIds.has(it.id) ? '<span class="badge new">NEW</span>' : ''}
-        <span class="who">${esc(it.studentId)} ${esc(it.name)}</span>
+        <span class="who who-link" title="이 학생의 누적 기록 보기">${esc(it.studentId)} ${esc(it.name)}</span>
+        ${hasRisk(it) ? `<span class="badge risk">⚠️ ${esc(it._risk.cats.join(' · '))}</span>` : ''}
         <span class="badge topic">${esc(it.topic)}</span>
         ${it.urgency ? `<span class="badge ${isHot(it) ? 'hot' : ''}">${esc(it.urgency)}</span>` : ''}
         <span class="badge status">${esc(it.status)}</span>
+        ${schDate(it) ? `<span class="badge sch">📅 ${fmtSch(schDate(it))}</span>` : ''}
+        ${it.parentLog ? '<span class="badge sent">💬 보호자 공유함</span>' : ''}
         <span class="time">${fmtTime(it.time)} · #${esc(it.id)}</span>
       </div>
       <div class="preview">${esc(it.story)}</div>
       <div class="body">
+        ${hasRisk(it) ? `<div class="risk-box">⚠️ <b>위험 신호 단어가 들어 있어요</b> (${esc(it._risk.cats.join(', '))}): ${it._risk.words.map(w => `‘${esc(w)}’`).join(', ')}<br>
+          가능한 한 <b>오늘 안에</b> 학생을 직접 만나 확인하고, 필요하면 Wee클래스·관리자·보호자와 함께 대응해 주세요. (단어만으로 찾은 것이라 아닐 수도 있어요)</div>` : ''}
         <h3 style="margin:12px 0 6px">무슨 일이 있었나요?</h3>
         <div class="story">${esc(it.story)}</div>
         <dl class="grid">
@@ -375,32 +661,393 @@ function render() {
           <dt>가능한 시간</dt><dd>${esc(it.times) || '-'}</dd>
           <dt>서약</dt><dd>✅ ${esc(it.pledge)}</dd>
         </dl>
+        <div class="sec-title">📝 담임 메모 <small>선생님만 보는 기록 · 보호자 문자에 자동으로 들어가지 않아요</small></div>
         <div class="manage">
-          <select class="st">${STATUSES.map(s => `<option ${s === it.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
-          <textarea class="memo" placeholder="교사 메모 (학생에게는 보이지 않아요)">${esc(it.memo)}</textarea>
-          <button class="btn save">저장</button>
+          <div class="mrow">
+            <select class="st">${STATUSES.map(s => `<option ${s === it.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
+            <label class="sched">📅 상담 일정 <input type="datetime-local" class="sch" value="${esc(it.schedule)}"></label>
+            <textarea class="memo" placeholder="상담하면서 느낀 점, 다음에 확인할 것 등 (학생·보호자에게 보이지 않아요)">${esc(it.memo)}</textarea>
+            <button class="btn save">저장</button>
+          </div>
         </div>
+        <div class="sec-title">💬 보호자 공유 기록 <small>보호자에게 보낸 문자만 따로 쌓여요</small>
+          <button class="btn parent" style="margin-left:auto">💬 보호자 문자 만들기</button></div>
+        <div class="plog">${plogHtml(it.parentLog)}</div>
       </div>
     </article>`).join('');
 
   $('list').querySelectorAll('.item').forEach(el => {
     const id = el.dataset.id;
+    el.querySelector('.who-link').onclick = e => { e.stopPropagation(); openStu(el.querySelector('.who-link').textContent.split(' ')[0]); };
     el.querySelector('.head').onclick = () => {
       el.classList.toggle('open');
       el.classList.contains('open') ? openIds.add(id) : openIds.delete(id);
       if (newIds.delete(id)) { el.querySelector('.badge.new')?.remove(); updateTitle(); }
     };
+    el.querySelector('.parent').onclick = () => openMsg(id);
     el.querySelector('.save').onclick = async e => {
-      const btn = e.target, status = el.querySelector('.st').value, memo = el.querySelector('.memo').value;
+      const btn = e.target, memo = el.querySelector('.memo').value, schedule = el.querySelector('.sch').value;
+      const it = items.find(i => i.id === id);
+      let status = el.querySelector('.st').value;
+      // 일정을 새로 정하면 '상담 예정'으로 자동 변경
+      if (schedule && schedule !== it.schedule && (status === '미확인' || status === '확인함')) status = '상담 예정';
       btn.disabled = true; btn.textContent = '저장 중...';
       try {
-        await api({ action: 'update', id, status, memo });
-        const it = items.find(i => i.id === id); it.status = status; it.memo = memo;
-        toast('저장했어요 ✅'); render();
+        await api({ action: 'update', id, status, memo, schedule });
+        it.status = status; it.memo = memo; it.schedule = schedule;
+        toast(status === '상담 예정' && schedule ? '저장했어요 ✅ (상담 예정으로 바꿨어요)' : '저장했어요 ✅'); render();
       } catch (err) { toast('⚠️ ' + err.message); btn.disabled = false; btn.textContent = '저장'; }
     };
   });
 }
+
+/* ---------- 보기 전환 ---------- */
+let view = 'list';
+document.querySelectorAll('.view').forEach(b => b.onclick = () => setView(b.dataset.v));
+function setView(v) {
+  view = v;
+  document.querySelectorAll('.view').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  ['list', 'students', 'stats', 'manage'].forEach(k => $(k + 'View').style.display = v === k ? 'block' : 'none');
+  if (v === 'students') renderStudents();
+  if (v === 'manage') renderManage();
+  if (v === 'stats') { if (!$('fromDate').value) setRange('month'); else renderStats(); }
+}
+
+/* ---------- 기간별 통계 ---------- */
+const FEELINGS = ['😢 속상해요', '😠 화가 나요', '😟 걱정돼요', '😮‍💨 답답해요', '😳 창피해요', '😨 무서워요', '😔 외로워요', '🤔 잘 모르겠어요'];
+const TOPICS = ['친구 관계', '공부·성적', '진로·꿈', '가족·집', '학교생활·규칙', '몸·마음 건강', '기타'];
+const pad2 = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const parseYmd = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+
+function setRange(kind) {
+  const now = new Date(), y = now.getFullYear(), m = now.getMonth();
+  const schoolYear = m >= 2 ? y : y - 1;        // 학년도: 3월 시작
+  let from, to = now;
+  if (kind === 'week') from = addDays(now, -((now.getDay() + 6) % 7));
+  else if (kind === 'month') from = new Date(y, m, 1);
+  else if (kind === 'lastmonth') { from = new Date(y, m - 1, 1); to = new Date(y, m, 0); }
+  else if (kind === 'sem') from = (m >= 2 && m <= 7) ? new Date(y, 2, 1) : new Date(schoolYear, 8, 1);
+  else if (kind === 'year') from = new Date(schoolYear, 2, 1);
+  else {
+    const times = items.map(i => new Date(i.time)).filter(d => !isNaN(d));
+    from = times.length ? new Date(Math.min(...times)) : now;
+  }
+  $('fromDate').value = ymd(from); $('toDate').value = ymd(to);
+  document.querySelectorAll('.range .tab').forEach(b => b.classList.toggle('on', b.dataset.r === kind));
+  renderStats();
+}
+document.querySelectorAll('.range .tab').forEach(b => b.onclick = () => setRange(b.dataset.r));
+['fromDate', 'toDate'].forEach(id => $(id).addEventListener('change', () => {
+  document.querySelectorAll('.range .tab').forEach(b => b.classList.remove('on')); renderStats();
+}));
+
+function bars(entries, total) {
+  const max = Math.max(1, ...entries.map(e => e[1]));
+  if (!entries.length || !total) return '<div class="nodata">기록이 없어요</div>';
+  return entries.map(([label, n]) => `
+    <div class="brow"><span class="lb" title="${esc(label)}">${esc(label)}</span>
+      <div class="btrack"><div class="bfill" style="width:${(n / max) * 100}%"></div></div>
+      <span class="n">${n}<small> (${Math.round(n / total * 100)}%)</small></span></div>`).join('');
+}
+const countBy = (arr, fn) => arr.reduce((m, x) => { const k = fn(x); if (k) m.set(k, (m.get(k) || 0) + 1); return m; }, new Map());
+
+function renderStats() {
+  if (!$('fromDate').value || !$('toDate').value) return;
+  let from = parseYmd($('fromDate').value), to = parseYmd($('toDate').value);
+  if (from > to) [from, to] = [to, from];
+  const end = addDays(to, 1);
+  const sel = items.filter(i => { const d = new Date(i.time); return d >= from && d < end; });
+  const n = sel.length;
+  const students = new Set(sel.map(i => i.studentId));
+  const done = sel.filter(i => i.status === '상담 완료').length;
+  const hot = sel.filter(i => i.urgency.includes('빨리')).length;
+
+  // 주제별 (정해진 순서 → 많은 순)
+  const byTopic = countBy(sel, i => i.topic);
+  const topicEntries = [...byTopic].sort((a, b) => b[1] - a[1]);
+  // 기분별 (여러 개 선택 가능)
+  const feelCount = new Map();
+  sel.forEach(i => FEELINGS.forEach(f => { if (i.feeling.includes(f)) feelCount.set(f, (feelCount.get(f) || 0) + 1); }));
+  const feelEntries = [...feelCount].sort((a, b) => b[1] - a[1]);
+  // 상태 / 급한 정도 / 바라는 것
+  const statusEntries = STATUSES.map(s => [s, sel.filter(i => i.status === s).length]);
+  const urgEntries = ['🐢 천천히 괜찮아요', '📅 이번 주 안에', '🔥 빨리 이야기하고 싶어요']
+    .map(u => [u, sel.filter(i => i.urgency === u).length]);
+  const noUrg = sel.filter(i => !i.urgency).length; if (noUrg) urgEntries.push(['선택 안 함', noUrg]);
+  const wishEntries = [...countBy(sel, i => i.wish || '선택 안 함')].sort((a, b) => b[1] - a[1]);
+  // 학생별 신청 횟수
+  const byStu = new Map();
+  sel.forEach(i => { const k = `${i.studentId} ${i.name}`; byStu.set(k, (byStu.get(k) || 0) + 1); });
+  const stuEntries = [...byStu].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 15);
+
+  // 날짜별 추이 (62일 넘으면 주 단위)
+  const spanDays = Math.round((end - from) / 86400000);
+  const weekly = spanDays > 62;
+  const buckets = [];
+  for (let d = new Date(from); d < end; d = addDays(d, weekly ? 7 : 1)) buckets.push({ start: d, n: 0 });
+  sel.forEach(i => {
+    const idx = Math.floor((new Date(i.time) - from) / 86400000 / (weekly ? 7 : 1));
+    if (buckets[idx]) buckets[idx].n++;
+  });
+  const bmax = Math.max(1, ...buckets.map(b => b.n));
+  const md = d => `${d.getMonth() + 1}/${d.getDate()}`;
+  const trend = n ? `
+    <div class="days">${buckets.map(b => `<div class="d" style="height:${b.n / bmax * 100}%" title="${md(b.start)}${weekly ? ' 주' : ''}: ${b.n}건"></div>`).join('')}</div>
+    <div class="days-axis"><span>${md(from)}</span><span>${weekly ? '주 단위 · 막대에 마우스를 올리면 건수가 보여요' : '막대에 마우스를 올리면 건수가 보여요'}</span><span>${md(to)}</span></div>`
+    : '<div class="nodata">기록이 없어요</div>';
+
+  $('statsBody').innerHTML = `
+    <div class="stats">
+      <div class="stat"><div class="k">신청 수</div><div class="v">${n}<small style="font-size:1rem"> 건</small></div></div>
+      <div class="stat"><div class="k">신청한 학생</div><div class="v">${students.size}<small style="font-size:1rem"> 명</small></div></div>
+      <div class="stat hot"><div class="k">🔥 급하다고 한 신청</div><div class="v">${hot}<small style="font-size:1rem"> 건</small></div></div>
+      <div class="stat"><div class="k">상담 완료율</div><div class="v">${n ? Math.round(done / n * 100) : 0}<small style="font-size:1rem"> %</small></div></div>
+    </div>
+    <div class="sgrid">
+      <div class="panel wide"><h3>📈 ${weekly ? '주별' : '날짜별'} 신청 수</h3>${trend}</div>
+      <div class="panel"><h3>🗂 상담 주제</h3>${bars(topicEntries, n)}</div>
+      <div class="panel"><h3>💭 학생들이 고른 기분 <small style="font-family:'Gowun Dodum';color:var(--sub);font-size:.85rem">(여러 개 선택 · 신청서 대비 %)</small></h3>${bars(feelEntries, n)}</div>
+      <div class="panel"><h3>🙋 학생별 신청 횟수 <small style="font-family:'Gowun Dodum';color:var(--sub);font-size:.85rem">(많은 순 15명)</small></h3>${bars(stuEntries, n)}</div>
+      <div class="panel"><h3>🙏 선생님께 바라는 것</h3>${bars(wishEntries, n)}</div>
+      <div class="panel"><h3>⏰ 급한 정도</h3>${bars(urgEntries, n)}</div>
+      <div class="panel"><h3>✅ 처리 상태</h3>${bars(statusEntries, n)}</div>
+    </div>`;
+}
+
+/* ---------- 보호자 문자 ---------- */
+let msgId = null;
+const SIGN_KEYS = ['mSchool', 'mClass', 'mTeacher'];
+SIGN_KEYS.forEach(k => {
+  try { $(k).value = localStorage.getItem('counsel_' + k) || ''; } catch {}
+  $(k).addEventListener('input', () => { try { localStorage.setItem('counsel_' + k, $(k).value); } catch {} });
+});
+['mSchool', 'mClass', 'mTeacher', 'mStudent', 'mDate', 'mTopic', 'mSummary', 'mRequest']
+  .forEach(k => $(k).addEventListener('input', buildMsg));
+$('mQuick').querySelectorAll('button').forEach(b => b.onclick = () => {
+  const t = $('mRequest');
+  if (!t.value.includes(b.textContent)) t.value = (t.value.trim() ? t.value.trim() + '\n' : '') + b.textContent;
+  buildMsg();
+});
+
+function openMsg(id) {
+  const it = items.find(i => i.id === id); if (!it) return;
+  msgId = id;
+  const d = new Date();
+  $('mStudent').value = it.name;
+  $('mDate').value = `${d.getMonth() + 1}월 ${d.getDate()}일`;
+  $('mTopic').value = it.topic;
+  $('mRef').textContent = it.memo || '메모가 없어요';
+  $('mRef').className = 'ref' + (it.memo ? '' : ' ref-empty');
+  $('mSummary').value = '';
+  $('mRequest').value = '';
+  $('mFamilyWarn').style.display = it.topic.includes('가족') ? 'block' : 'none';
+  $('msgModal').classList.add('show');
+  buildMsg();
+  (SIGN_KEYS.find(k => !$(k).value) ? $(SIGN_KEYS.find(k => !$(k).value)) : $('mSummary')).focus();
+}
+function closeMsg() { $('msgModal').classList.remove('show'); msgId = null; }
+$('mClose').onclick = closeMsg;
+$('msgModal').addEventListener('click', e => { if (e.target.id === 'msgModal') closeMsg(); });
+
+function buildMsg() {
+  const v = k => $(k).value.trim();
+  const stu = v('mStudent') || '○○○';
+  const lines = [];
+  lines.push(`${v('mSchool') ? `[${v('mSchool')}] ` : ''}안녕하세요, ${stu} 학생 보호자님.`);
+  lines.push(`${v('mClass') ? v('mClass') + ' ' : ''}담임 ${v('mTeacher') || '○○○'}입니다.`);
+  lines.push('');
+  lines.push(`${v('mDate') ? v('mDate') + '에 ' : ''}${stu} 학생과 '${v('mTopic') || '학교생활'}'에 대해 상담을 하여 내용을 공유드립니다.`);
+  lines.push('');
+  lines.push('■ 상담 내용');
+  lines.push(v('mSummary') || '(상담 내용을 왼쪽에 적어 주세요)');
+  if (v('mRequest')) { lines.push(''); lines.push('■ 가정에서 함께해 주실 부분'); lines.push(v('mRequest')); }
+  lines.push('');
+  lines.push('궁금하신 점이나 나누고 싶은 이야기가 있으시면 편하게 연락 주세요.');
+  lines.push('감사합니다.');
+  const text = lines.join('\n');
+  $('mPreview').textContent = text;
+  $('mTo').textContent = `${stu} 학생 보호자님께`;
+  const bytes = [...text].reduce((s, c) => s + (c.charCodeAt(0) < 128 ? 1 : 2), 0);
+  $('mMeta').textContent = `${text.length}자 · 약 ${bytes}바이트 ${bytes > 90 ? '(장문 문자 LMS)' : '(단문 문자)'}${bytes > 2000 ? ' ⚠️ 2,000바이트를 넘어 나뉘어 보내질 수 있어요' : ''}`;
+  return text;
+}
+
+$('mCopy').onclick = async () => {
+  if (!$('mSummary').value.trim()) { toast('상담 내용을 먼저 적어 주세요'); $('mSummary').focus(); return; }
+  const text = buildMsg();
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove();
+  }
+  toast('📋 복사했어요! 문자·알림 앱에 붙여넣어 보내세요', 3000);
+};
+
+$('mLog').onclick = async () => {
+  const it = items.find(i => i.id === msgId); if (!it) return;
+  if (!$('mSummary').value.trim()) { toast('상담 내용을 먼저 적어 주세요'); $('mSummary').focus(); return; }
+  if (!confirm('이 문자를 보호자에게 보낸 것으로 기록할까요?\n(담임 메모와는 따로 저장돼요)')) return;
+  const btn = $('mLog'); btn.disabled = true;
+  try {
+    const out = await api({ action: 'parentLog', id: it.id, text: buildMsg() });
+    it.parentLog = out.parentLog;
+    toast('✅ 보호자 공유 기록에 남겼어요', 2500);
+    openIds.add(it.id); closeMsg(); render();
+  } catch (err) { toast('⚠️ ' + err.message); }
+  finally { btn.disabled = false; }
+};
+
+function plogHtml(log) {
+  if (!log) return '<div class="none">아직 보호자에게 공유한 기록이 없어요.</div>';
+  return String(log).split(/\n\n=====\n\n/).reverse().map(e => {
+    const m = e.match(/^\[([^\]]+)\]\n?([\s\S]*)$/);
+    return `<div class="entry">${m ? `<b>📤 ${esc(m[1])}</b>\n${esc(m[2])}` : esc(e)}</div>`;
+  }).join('');
+}
+
+
+/* ---------- 오늘 상담 ---------- */
+function renderToday() {
+  const now = new Date(), weekEnd = addDays(now, 7);
+  const sch = items.map(i => ({ i, d: schDate(i) })).filter(x => x.d && x.i.status !== '상담 완료').sort((a, b) => a.d - b.d);
+  const today = sch.filter(x => sameDay(x.d, now));
+  const soon = sch.filter(x => !sameDay(x.d, now) && x.d > now && x.d < weekEnd);
+  const overdue = sch.filter(x => x.d < now && !sameDay(x.d, now));
+  const box = $('today');
+  if (!today.length && !soon.length && !overdue.length) { box.style.display = 'none'; return; }
+  const chip = (x, past) => `<button class="chip ${past ? 'past' : ''}" data-id="${esc(x.i.id)}">${fmtSch(x.d).split(' ')[sameDay(x.d, now) ? 1 : 0]}${sameDay(x.d, now) ? '' : ' ' + fmtSch(x.d).split(' ')[1]} · ${esc(x.i.name)}</button>`;
+  box.innerHTML = `
+    <h3>📅 오늘 상담 ${today.length}명</h3>
+    <div class="chips2">${today.length ? today.map(x => chip(x, x.d < now)).join('') : '<span class="sub" style="margin:0">오늘 잡힌 상담이 없어요</span>'}</div>
+    ${soon.length ? `<div class="sub">다음 7일: </div><div class="chips2" style="margin-top:4px">${soon.map(x => chip(x)).join('')}</div>` : ''}
+    ${overdue.length ? `<div class="sub">⏰ 날짜가 지났는데 아직 '상담 완료'가 아닌 상담 ${overdue.length}건: </div><div class="chips2" style="margin-top:4px">${overdue.map(x => chip(x, true)).join('')}</div>` : ''}`;
+  box.style.display = 'block';
+  box.querySelectorAll('.chip').forEach(b => b.onclick = () => focusItem(b.dataset.id));
+}
+function focusItem(id) {
+  filter = '전체'; $('search').value = ''; openIds.add(id);
+  if (newIds.delete(id)) updateTitle();
+  setView('list'); render();
+  const el = document.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ---------- 학생별 기록 ---------- */
+function studentGroups() {
+  const m = new Map();
+  items.forEach(i => {
+    if (!m.has(i.studentId)) m.set(i.studentId, { sid: i.studentId, name: i.name, list: [] });
+    m.get(i.studentId).list.push(i);
+  });
+  m.forEach(g => {
+    g.list.sort((a, b) => new Date(a.time) - new Date(b.time));
+    g.name = g.list[g.list.length - 1].name;
+  });
+  return [...m.values()].sort((a, b) => a.sid.localeCompare(b.sid, undefined, { numeric: true }));
+}
+$('stuSearch').addEventListener('input', renderStudents);
+function renderStudents() {
+  const q = $('stuSearch').value.trim();
+  const groups = studentGroups().filter(g => !q || g.sid.includes(q) || g.name.includes(q));
+  if (!groups.length) { $('stuTable').innerHTML = '<div class="empty">📭 기록이 없어요.</div>'; return; }
+  $('stuTable').innerHTML = `<table class="stable"><thead><tr>
+      <th>학번</th><th>이름</th><th class="num">신청</th><th class="num">진행중</th><th class="num">⚠️ 위험 신호</th><th class="num">💬 보호자 공유</th><th>마지막 신청</th>
+    </tr></thead><tbody>${groups.map(g => {
+      const risk = g.list.filter(hasRisk).length, open = g.list.filter(i => i.status !== '상담 완료').length;
+      const shared = g.list.filter(i => i.parentLog).length;
+      return `<tr data-sid="${esc(g.sid)}"><td>${esc(g.sid)}</td><td><b>${esc(g.name)}</b></td>
+        <td class="num">${g.list.length}</td><td class="num">${open}</td>
+        <td class="num ${risk ? 'r' : ''}">${risk || '-'}</td><td class="num">${shared || '-'}</td>
+        <td>${fmtTime(g.list[g.list.length - 1].time)}</td></tr>`;
+    }).join('')}</tbody></table>`;
+  $('stuTable').querySelectorAll('tr[data-sid]').forEach(tr => tr.onclick = () => openStu(tr.dataset.sid));
+}
+function openStu(sid) {
+  const g = studentGroups().find(x => x.sid === sid); if (!g) return;
+  const topics = [...countBy(g.list, i => i.topic)].sort((a, b) => b[1] - a[1]).map(([t, n]) => `${t} ${n}`).join(', ');
+  $('stuTitle').textContent = `👤 ${g.sid} ${g.name} · 누적 기록`;
+  $('stuSummary').innerHTML = `신청 ${g.list.length}건 · 첫 신청 ${esc(fmtTime(g.list[0].time))} · 주제: ${esc(topics)}
+    ${g.list.some(hasRisk) ? ` · <b style="color:#c92a2a">⚠️ 위험 신호 ${g.list.filter(hasRisk).length}건</b>` : ''}`;
+  $('stuTimeline').innerHTML = g.list.map(i => {
+    const sd = schDate(i);
+    const plogs = i.parentLog ? String(i.parentLog).split(/\n\n=====\n\n/) : [];
+    return `<div class="tl-item ${hasRisk(i) ? 'risk' : ''}">
+      <div class="when">${esc(fmtTime(i.time))} · ${esc(i.topic)}
+        <span class="badge status">${esc(i.status)}</span>
+        ${hasRisk(i) ? `<span class="badge risk">⚠️ ${esc(i._risk.cats.join(' · '))}</span>` : ''}
+        ${i.urgency ? `<span class="badge">${esc(i.urgency)}</span>` : ''}
+        ${sd ? `<span class="badge sch">📅 상담 ${fmtSch(sd)}</span>` : ''}</div>
+      <div class="txt">${esc(i.story)}</div>
+      <div class="lab">기분: ${esc(i.feeling) || '-'} · 바라는 것: ${esc(i.wish) || '-'}</div>
+      ${i.memo ? `<div class="lab">📝 담임 메모</div><div class="tl-memo">${esc(i.memo)}</div>` : ''}
+      ${plogs.map(p => `<div class="lab">💬 보호자 공유</div><div class="tl-plog">${esc(p)}</div>`).join('')}
+    </div>`;
+  }).join('');
+  $('stuModal').classList.add('show');
+}
+function closeStu() { $('stuModal').classList.remove('show'); }
+$('stuClose').onclick = closeStu;
+$('stuModal').addEventListener('click', e => { if (e.target.id === 'stuModal') closeStu(); });
+$('stuPrint').onclick = () => {
+  document.body.classList.add('print-stu');
+  window.print();
+  setTimeout(() => document.body.classList.remove('print-stu'), 500);
+};
+
+/* ---------- 관리 ---------- */
+$('acceptBadge').onclick = () => setView('manage');
+function renderManage() {
+  setAccept(accept);
+  if (!$('arcLabel').value) {
+    const now = new Date();
+    $('arcLabel').value = `${now.getMonth() >= 2 ? now.getFullYear() : now.getFullYear() - 1}학년도`;
+  }
+}
+async function changeAccept(on) {
+  if (!on && !confirm('상담 신청을 마감할까요?\n학생 화면에 안내 문구가 뜨고 신청서를 보낼 수 없게 돼요.')) return;
+  try {
+    await api({ action: 'setAccepting', accepting: on, closedMsg: $('closedMsgInput').value });
+    toast(on ? '🟢 이제 신청을 받아요' : '🔴 신청을 마감했어요', 2500);
+  } catch (err) { toast('⚠️ ' + err.message); }
+}
+$('accOn').onclick = () => changeAccept(true);
+$('accOff').onclick = () => changeAccept(false);
+
+$('csvBtn').onclick = () => {
+  const cols = [['id', '접수번호'], ['time', '접수시각'], ['studentId', '학번'], ['name', '이름'], ['topic', '상담주제'],
+    ['story', '무슨 일'], ['feeling', '그때 기분'], ['wish', '바라는 것'], ['urgency', '급한 정도'], ['times', '가능한 시간'],
+    ['status', '처리상태'], ['schedule', '상담 일정'], ['memo', '교사메모'], ['parentLog', '보호자 공유 기록']];
+  const cell = v => {
+    let s = String(v ?? '');
+    if (/^[=+\-@]/.test(s)) s = "'" + s;
+    return '"' + s.replace(/"/g, '""') + '"';
+  };
+  const rows = [cols.map(c => c[1]).concat('위험 신호')]
+    .concat(items.map(i => cols.map(([k]) => k === 'time' ? fmtTime(i.time) : i[k]).concat(hasRisk(i) ? i._risk.cats.join(', ') : '')));
+  const csv = '﻿' + rows.map(r => r.map(cell).join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = `상담신청_${ymd(new Date())}.csv`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast('📥 내려받았어요. 쓴 뒤에는 파일을 지워 주세요', 3000);
+};
+
+$('arcBtn').onclick = async () => {
+  if ($('arcConfirm').value.trim() !== '정리') { toast("확인 칸에 '정리'라고 입력해 주세요"); $('arcConfirm').focus(); return; }
+  if (!confirm(`지금까지의 기록 ${items.length}건을 보관용 시트로 옮기고, 지금 시트를 비울까요?\n(되돌릴 수 없어요. 보관 파일은 남아 있어요)`)) return;
+  const btn = $('arcBtn'); btn.disabled = true; btn.textContent = '정리하는 중...';
+  try {
+    const out = await api({ action: 'archive', confirm: '정리', label: $('arcLabel').value });
+    $('arcResult').innerHTML = `✅ ${out.count}건을 보관했어요. <a href="${esc(out.url)}" target="_blank" rel="noopener">보관 시트 열기 ↗</a>`;
+    $('arcConfirm').value = '';
+    const fresh = await api({ action: 'list' });
+    newIds.clear(); applyItems(fresh.items, false); render();
+  } catch (err) { toast('⚠️ ' + err.message); }
+  finally { btn.disabled = false; btn.textContent = '🗄 보관하고 비우기'; }
+};
 </script>
 </body>
 </html>
