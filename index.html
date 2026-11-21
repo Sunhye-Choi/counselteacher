@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>상담 신청 확인 (교사용)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#fffdf6;--line:#e9e2cf;--ink:#3b3a36;--sub:#7a7568;--main:#f59e6b;--main-dark:#e07a45;--red:#d9480f}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Gowun Dodum',system-ui,sans-serif;color:var(--ink);background:#f3eee4;line-height:1.6}
+  h1,h2,h3,.jua{font-family:'Jua',sans-serif;font-weight:400}
+  button{font:inherit;cursor:pointer}
+  input,select,textarea{font:inherit;color:var(--ink)}
+
+  /* 로그인 */
+  #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .login-box{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:34px 28px;width:100%;max-width:380px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+  .login-box h1{margin:0 0 4px;font-size:1.6rem}
+  .login-box p{margin:0 0 18px;color:var(--sub)}
+  .login-box input{width:100%;padding:13px 14px;border-radius:12px;border:2px solid var(--line);font-size:1.1rem;text-align:center}
+  .login-box input:focus{outline:none;border-color:var(--main)}
+  .btn{border:none;border-radius:12px;padding:11px 18px;background:var(--main);color:#fff;font-family:'Jua';font-size:1.05rem}
+  .btn:hover{background:var(--main-dark)}
+  .btn:disabled{background:#cfc6b4}
+  .btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--main)}
+  .login-box .btn{width:100%;margin-top:12px;padding:13px}
+  .msg{margin-top:12px;color:#a61e1e;font-weight:bold;min-height:1.4em}
+
+  /* 대시보드 */
+  #app{display:none;max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .top h1{margin:0;font-size:1.6rem}
+  .top .tools{display:flex;gap:8px;flex-wrap:wrap}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .stat .k{color:var(--sub);font-size:.9rem}
+  .stat .v{font-family:'Jua';font-size:1.8rem;line-height:1.2}
+  .stat.hot .v{color:var(--red)}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tab{border:2px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px}
+  .tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .search{flex:1;min-width:200px;padding:9px 14px;border-radius:999px;border:2px solid var(--line)}
+  .search:focus{outline:none;border-color:var(--main)}
+
+  .list{display:grid;gap:12px}
+  .item{background:var(--paper);border:1px solid var(--line);border-left:8px solid #cfc6b4;border-radius:14px;overflow:hidden}
+  .item.s0{border-left-color:var(--main)}
+  .item.s1{border-left-color:#74b9ff}
+  .item.s2{border-left-color:#a29bfe}
+  .item.s3{border-left-color:#55c595;opacity:.8}
+  .item.hot{box-shadow:0 0 0 2px #ffb4a2}
+  .head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;cursor:pointer;user-select:none}
+  .head .who{font-family:'Jua';font-size:1.2rem}
+  .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.85rem;background:#f1ebdc}
+  .badge.topic{background:#e3f0ff}
+  .badge.hot{background:#ffe3e3;color:#a61e1e;font-weight:bold}
+  .badge.status{background:#fff;border:1px solid var(--line)}
+  .head .time{margin-left:auto;color:var(--sub);font-size:.9rem}
+  .preview{padding:0 16px 12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .body{display:none;padding:4px 16px 16px;border-top:1px dashed var(--line)}
+  .item.open .body{display:block}
+  .item.open .preview{display:none}
+  .grid{display:grid;grid-template-columns:120px 1fr;gap:6px 14px;margin:12px 0}
+  .grid dt{color:var(--sub)}
+  .grid dd{margin:0;white-space:pre-wrap;word-break:break-word}
+  .story{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;white-space:pre-wrap;word-break:break-word;font-size:1.05rem;line-height:1.8}
+  .manage{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-top:14px;background:#f7f2e6;border-radius:12px;padding:12px}
+  .manage select{padding:9px;border-radius:10px;border:2px solid var(--line)}
+  .manage textarea{flex:1;min-width:220px;min-height:60px;padding:9px 12px;border-radius:10px;border:2px solid var(--line);resize:vertical}
+  .saved{color:#2f9e44;font-weight:bold;align-self:center}
+  .empty{text-align:center;color:var(--sub);padding:50px 0}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;opacity:0;transition:.2s;pointer-events:none}
+  .toast.show{opacity:1}
+  @media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.grid dt{font-weight:bold}}
+  .badge.new{background:var(--red);color:#fff;font-weight:bold;animation:pop 1s ease-in-out infinite alternate}
+  @keyframes pop{from{transform:scale(1)}to{transform:scale(1.08)}}
+  .btn.ghost.on{border-color:var(--main);background:#fff3ea}
+  .lock-info{display:none;margin:0 0 16px;padding:12px;border-radius:12px;background:#f1ebdc;font-weight:bold}
+  .lock-info.alert{background:#ffe3e3;color:#a61e1e;animation:pop 1s ease-in-out infinite alternate}
+  .lock-info.show{display:block}
+  .logout{margin-top:10px;background:none;border:none;color:var(--sub);text-decoration:underline;font-size:.9rem;display:none}
+  .poll{color:var(--sub);font-size:.85rem;margin:-6px 0 12px;text-align:right}
+  @media print{.top .tools,.bar,.manage{display:none}.body{display:block!important}.preview{display:none}}
+</style>
+</head>
+<body>
+
+<section id="login">
+  <form class="login-box" id="loginForm">
+    <div style="font-size:3rem">🔐</div>
+    <h1 id="loginTitle">상담 신청 확인</h1>
+    <p>교사용 비밀번호를 입력하세요.</p>
+    <div class="lock-info" id="lockInfo"></div>
+    <input type="password" id="pw" placeholder="비밀번호" autocomplete="current-password">
+    <button class="btn" id="loginBtn">열기</button>
+    <div class="msg" id="loginMsg"></div>
+    <button type="button" class="logout" id="logoutBtn">완전히 로그아웃 (새 신청 확인도 멈춤)</button>
+  </form>
+</section>
+
+<section id="app">
+  <div class="top">
+    <h1>📮 상담 신청함</h1>
+    <div class="tools">
+      <button class="btn ghost" id="notiBtn">🔔 알림 켜기</button>
+      <button class="btn ghost" id="soundBtn">🔊 소리 켬</button>
+      <button class="btn ghost" id="refreshBtn">🔄 새로고침</button>
+      <button class="btn" id="lockBtn" title="단축키: Esc">🙈 화면 잠금</button>
+    </div>
+  </div>
+  <div class="poll" id="pollInfo"></div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">전체</div><div class="v" id="stTotal">0</div></div>
+    <div class="stat hot"><div class="k">미확인</div><div class="v" id="stNew">0</div></div>
+    <div class="stat"><div class="k">상담 예정</div><div class="v" id="stPlan">0</div></div>
+    <div class="stat hot"><div class="k">🔥 급함 (미완료)</div><div class="v" id="stHot">0</div></div>
+  </div>
+
+  <div class="bar">
+    <div class="tabs" id="tabs"></div>
+    <input class="search" id="search" placeholder="🔍 이름, 학번, 내용 검색">
+  </div>
+
+  <div class="list" id="list"></div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== 설정 ===================== */
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwY6ZBqUaf7mHF3xkS2pZWjJs_QGCn3PK4R0CMyFpqJrFyfJgRYh9kQsj9BFUCSh4Xj/exec';
+const AUTO_LOCK_MINUTES = 10;   // 아무 조작이 없으면 자동 잠금 (잠겨도 새 신청 확인은 계속)
+const POLL_SECONDS = 30;        // 새 신청 확인 간격
+/* ================================================ */
+
+const $ = id => document.getElementById(id);
+const STATUSES = ['미확인', '확인함', '상담 예정', '상담 완료'];
+let password = '';      // 메모리에만 보관 (탭을 닫거나 '완전히 로그아웃'하면 사라짐)
+let unlocked = false;   // 화면이 열려 있는지
+let items = [];
+let filter = '진행중';
+let openIds = new Set();
+let knownIds = null;    // 지금까지 본 신청서 번호
+let newIds = new Set(); // 아직 열어 보지 않은 새 신청서
+let pollTimer = null, lastSig = '';
+
+const pref = (k, d) => { try { const v = localStorage.getItem('counsel_' + k); return v === null ? d : v === '1'; } catch { return d; } };
+const savePref = (k, v) => { try { localStorage.setItem('counsel_' + k, v ? '1' : '0'); } catch {} };
+let notiOn = pref('noti', false), soundOn = pref('sound', true);
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const isHot = it => it.urgency.includes('빨리') && it.status !== '상담 완료';
+function fmtTime(iso) {
+  const d = new Date(iso); if (isNaN(d)) return iso;
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getMonth() + 1}/${d.getDate()} (${'일월화수목금토'[d.getDay()]}) ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function toast(msg, ms = 1800) { $('toast').textContent = msg; $('toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => $('toast').classList.remove('show'), ms); }
+
+async function api(payload, pw = password) {
+  if (SCRIPT_URL.includes('여기에')) throw new Error('teacher.html 안의 SCRIPT_URL을 먼저 설정하세요.');
+  const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ ...payload, password: pw }) });
+  const out = await res.json();
+  if (out.auth === false) { if (password) logout(out.error); throw new Error(out.error); }
+  if (!out.ok) throw new Error(out.error || '요청 실패');
+  return out;
+}
+
+/* ---------- 로그인 / 잠금 ---------- */
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const pw = $('pw').value;
+  if (!pw) return;
+  initSound();
+  $('loginBtn').disabled = true; $('loginMsg').textContent = '';
+  try {
+    const out = await api({ action: 'list' }, pw);
+    password = pw; $('pw').value = '';
+    applyItems(out.items, false);
+    unlocked = true;
+    $('login').style.display = 'none';
+    $('app').style.display = 'block';
+    render(); resetIdle(); startPolling();
+  } catch (err) {
+    $('loginMsg').textContent = err.message === 'Failed to fetch' ? '서버에 연결할 수 없어요.' : err.message;
+  } finally { $('loginBtn').disabled = false; }
+});
+
+// 화면만 가리기: 내용은 숨기고, 새 신청 확인은 계속
+function lock(msg) {
+  unlocked = false; openIds.clear();
+  $('list').innerHTML = '';
+  $('app').style.display = 'none';
+  $('login').style.display = 'flex';
+  $('loginTitle').textContent = '🔒 잠겨 있어요';
+  $('logoutBtn').style.display = 'inline';
+  $('loginMsg').textContent = msg || '';
+  updateLockInfo();
+  $('pw').focus();
+}
+// 완전히 로그아웃: 비밀번호를 지우고 확인도 멈춤
+function logout(msg) {
+  password = ''; items = []; knownIds = null; newIds.clear(); lastSig = '';
+  clearInterval(pollTimer); pollTimer = null;
+  lock(msg);
+  $('loginTitle').textContent = '상담 신청 확인';
+  $('logoutBtn').style.display = 'none';
+  $('lockInfo').className = 'lock-info';
+  updateTitle();
+}
+$('lockBtn').onclick = () => lock();
+$('logoutBtn').onclick = () => logout('로그아웃했어요.');
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && unlocked) lock(); });
+
+let idleTimer;
+function resetIdle() {
+  clearTimeout(idleTimer);
+  if (unlocked) idleTimer = setTimeout(() => lock('오랫동안 사용하지 않아 자동으로 잠겼어요.'), AUTO_LOCK_MINUTES * 60000);
+}
+['click', 'keydown', 'mousemove', 'touchstart', 'scroll'].forEach(ev => document.addEventListener(ev, resetIdle, { passive: true }));
+
+/* ---------- 새 신청 확인 & 알림 ---------- */
+function startPolling() {
+  clearInterval(pollTimer);
+  pollTimer = setInterval(poll, POLL_SECONDS * 1000);
+  updatePollInfo();
+}
+async function poll() {
+  if (!password) return;
+  try {
+    const out = await api({ action: 'list' });
+    applyItems(out.items, true);
+    updatePollInfo();
+  } catch (err) {
+    $('pollInfo').textContent = '⚠️ 새 신청 확인 실패: ' + err.message + ' (다음에 다시 시도해요)';
+  }
+}
+function updatePollInfo() {
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  $('pollInfo').textContent = `⏱ ${POLL_SECONDS}초마다 새 신청을 확인해요 · 마지막 확인 ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+
+// 새로 받은 목록 반영, 새 신청서가 있으면 알림
+function applyItems(list, notifyNew) {
+  const fresh = knownIds ? list.filter(i => !knownIds.has(i.id)) : [];
+  knownIds = new Set(list.map(i => i.id));
+  const sig = JSON.stringify(list);
+  const changed = sig !== lastSig;
+  lastSig = sig; items = list;
+
+  if (notifyNew && fresh.length) {
+    fresh.forEach(i => newIds.add(i.id));
+    alertNew(fresh);
+  }
+  updateTitle(); updateLockInfo();
+  // 메모를 쓰는 중이면 화면을 다시 그리지 않음 (쓰던 내용 보호)
+  const editing = document.activeElement?.closest?.('.manage');
+  if (unlocked && changed && !editing) render();
+  else if (unlocked && changed) $('pollInfo').textContent += ' · 메모 저장 후 목록이 새로 고쳐져요';
+}
+
+function alertNew(fresh) {
+  const hot = fresh.some(i => i.urgency.includes('빨리'));
+  const msg = `새 상담 신청 ${fresh.length}건이 도착했어요${hot ? ' (🔥 급함 포함)' : ''}`;
+  if (unlocked) toast('📮 ' + msg, 4000);
+  if (soundOn) playChime(hot);
+  // 화면이 TV에 보일 수 있으니 알림에는 이름·내용을 넣지 않음
+  if (notiOn && 'Notification' in window && Notification.permission === 'granted') {
+    try {
+      const n = new Notification('📮 상담 신청함', { body: msg, tag: 'counsel-new', renotify: true });
+      n.onclick = () => { window.focus(); n.close(); };
+    } catch {}
+  }
+}
+function updateTitle() {
+  document.title = (newIds.size ? `(${newIds.size}) ` : '') + '상담 신청 확인 (교사용)';
+}
+function updateLockInfo() {
+  const box = $('lockInfo');
+  if (!password || unlocked) { box.className = 'lock-info'; return; }
+  box.className = 'lock-info show' + (newIds.size ? ' alert' : '');
+  box.textContent = newIds.size
+    ? `🔔 새 상담 신청 ${newIds.size}건이 도착했어요`
+    : '새 신청이 오면 여기에 알려 드려요 👀';
+}
+
+// 브라우저 알림 켜기/끄기
+function updateNotiBtn() {
+  const granted = 'Notification' in window && Notification.permission === 'granted';
+  const on = notiOn && granted;
+  $('notiBtn').textContent = on ? '🔔 알림 켬' : '🔕 알림 꺼짐';
+  $('notiBtn').classList.toggle('on', on);
+}
+$('notiBtn').onclick = async () => {
+  if (!('Notification' in window)) return toast('이 브라우저는 알림을 지원하지 않아요');
+  if (notiOn && Notification.permission === 'granted') { notiOn = false; }
+  else {
+    const p = Notification.permission === 'default' ? await Notification.requestPermission() : Notification.permission;
+    if (p !== 'granted') { toast('브라우저에서 알림이 차단되어 있어요. 주소창 왼쪽 🔒 아이콘에서 알림을 허용해 주세요.', 5000); notiOn = false; }
+    else { notiOn = true; toast('🔔 이제 다른 창을 보고 있어도 알려 드려요'); }
+  }
+  savePref('noti', notiOn); updateNotiBtn();
+};
+
+// 알림 소리 (파일 없이 브라우저에서 만듦)
+let audioCtx;
+function initSound() { try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume(); } catch {} }
+function playChime(hot) {
+  if (!audioCtx) return;
+  const notes = hot ? [880, 660, 880, 660] : [660, 880];
+  notes.forEach((f, i) => {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = audioCtx.currentTime + i * 0.22;
+    o.type = 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+    o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t + 0.4);
+  });
+}
+function updateSoundBtn() { $('soundBtn').textContent = soundOn ? '🔊 소리 켬' : '🔈 소리 끔'; $('soundBtn').classList.toggle('on', soundOn); }
+$('soundBtn').onclick = () => { soundOn = !soundOn; savePref('sound', soundOn); updateSoundBtn(); initSound(); if (soundOn) playChime(false); };
+updateNotiBtn(); updateSoundBtn();
+
+/* ---------- 목록 ---------- */
+$('refreshBtn').onclick = async () => {
+  try { const out = await api({ action: 'list' }); applyItems(out.items, true); render(); toast('새로 불러왔어요'); }
+  catch (err) { toast('⚠️ ' + err.message); }
+};
+$('search').addEventListener('input', render);
+
+function render() {
+  const count = s => items.filter(i => i.status === s).length;
+  $('stTotal').textContent = items.length;
+  $('stNew').textContent = count('미확인');
+  $('stPlan').textContent = count('상담 예정');
+  $('stHot').textContent = items.filter(isHot).length;
+
+  const tabs = ['진행중', '전체', ...STATUSES];
+  $('tabs').innerHTML = tabs.map(t => {
+    const n = t === '전체' ? items.length : t === '진행중' ? items.length - count('상담 완료') : count(t);
+    return `<button class="tab ${t === filter ? 'on' : ''}" data-t="${t}">${t} ${n}</button>`;
+  }).join('');
+  $('tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => { filter = b.dataset.t; render(); });
+
+  const q = $('search').value.trim().toLowerCase();
+  let list = items.filter(i =>
+    filter === '전체' ? true : filter === '진행중' ? i.status !== '상담 완료' : i.status === filter);
+  if (q) list = list.filter(i => [i.name, i.studentId, i.story, i.topic, i.feeling, i.memo].join(' ').toLowerCase().includes(q));
+  // 급한 것 먼저, 그다음 최신순
+  list.sort((a, b) => (isHot(b) - isHot(a)) || (new Date(b.time) - new Date(a.time)));
+
+  if (!list.length) { $('list').innerHTML = `<div class="empty">📭 해당하는 신청서가 없어요.</div>`; return; }
+
+  $('list').innerHTML = list.map(it => `
+    <article class="item s${STATUSES.indexOf(it.status)} ${isHot(it) ? 'hot' : ''} ${openIds.has(it.id) ? 'open' : ''}" data-id="${esc(it.id)}">
+      <div class="head">
+        ${newIds.has(it.id) ? '<span class="badge new">NEW</span>' : ''}
+        <span class="who">${esc(it.studentId)} ${esc(it.name)}</span>
+        <span class="badge topic">${esc(it.topic)}</span>
+        ${it.urgency ? `<span class="badge ${isHot(it) ? 'hot' : ''}">${esc(it.urgency)}</span>` : ''}
+        <span class="badge status">${esc(it.status)}</span>
+        <span class="time">${fmtTime(it.time)} · #${esc(it.id)}</span>
+      </div>
+      <div class="preview">${esc(it.story)}</div>
+      <div class="body">
+        <h3 style="margin:12px 0 6px">무슨 일이 있었나요?</h3>
+        <div class="story">${esc(it.story)}</div>
+        <dl class="grid">
+          <dt>그때 기분</dt><dd>${esc(it.feeling) || '-'}</dd>
+          <dt>바라는 것</dt><dd>${esc(it.wish) || '-'}</dd>
+          <dt>가능한 시간</dt><dd>${esc(it.times) || '-'}</dd>
+          <dt>서약</dt><dd>✅ ${esc(it.pledge)}</dd>
+        </dl>
+        <div class="manage">
+          <select class="st">${STATUSES.map(s => `<option ${s === it.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
+          <textarea class="memo" placeholder="교사 메모 (학생에게는 보이지 않아요)">${esc(it.memo)}</textarea>
+          <button class="btn save">저장</button>
+        </div>
+      </div>
+    </article>`).join('');
+
+  $('list').querySelectorAll('.item').forEach(el => {
+    const id = el.dataset.id;
+    el.querySelector('.head').onclick = () => {
+      el.classList.toggle('open');
+      el.classList.contains('open') ? openIds.add(id) : openIds.delete(id);
+      if (newIds.delete(id)) { el.querySelector('.badge.new')?.remove(); updateTitle(); }
+    };
+    el.querySelector('.save').onclick = async e => {
+      const btn = e.target, status = el.querySelector('.st').value, memo = el.querySelector('.memo').value;
+      btn.disabled = true; btn.textContent = '저장 중...';
+      try {
+        await api({ action: 'update', id, status, memo });
+        const it = items.find(i => i.id === id); it.status = status; it.memo = memo;
+        toast('저장했어요 ✅'); render();
+      } catch (err) { toast('⚠️ ' + err.message); btn.disabled = false; btn.textContent = '저장'; }
+    };
+  });
+}
+</script>
+</body>
+</html>
